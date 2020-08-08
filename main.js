@@ -1,3 +1,46 @@
+window.addEventListener('keypress', (e) => {
+  switch (e.keyCode) {
+    case 48:
+      return populateDisplay(0);
+    case 49:
+      return populateDisplay(1);
+    case 50:
+      return populateDisplay(2);
+    case 51:
+      return populateDisplay(3);
+    case 52:
+      return populateDisplay(4);
+    case 53:
+      return populateDisplay(5);
+    case 54:
+      return populateDisplay(6);
+    case 55:
+      return populateDisplay(7);
+    case 56:
+      return populateDisplay(8);
+    case 57:
+      return populateDisplay(9);
+    case 46:
+      return populateDisplay('.');
+    case 61:
+      return equals();
+    case 43:
+      return setOperator('+');
+    case 45:
+      return setOperator('-');
+    case 42:
+      return setOperator('*');
+    case 47:
+      return setOperator('/');
+  }
+});
+
+window.addEventListener('keydown', (e) => {
+  if (e.keyCode === 8) {
+    backspace();
+  }
+});
+
 const display_span = document.querySelector('.display');
 
 const digit1_btn = document.querySelector('.digit1');
@@ -30,11 +73,17 @@ digit9_btn.addEventListener('click', () => populateDisplay(9));
 const digit0_btn = document.querySelector('.digit0');
 digit0_btn.addEventListener('click', () => populateDisplay(0));
 
+const decimalPoint_btn = document.querySelector('.decimalPoint');
+decimalPoint_btn.addEventListener('click', () => populateDisplay('.'));
+
 const equals_btn = document.querySelector('.equals');
 equals_btn.addEventListener('click', () => equals());
 
 const clear_btn = document.querySelector('.clear');
 clear_btn.addEventListener('click', () => clear());
+
+const backspace_btn = document.querySelector('.backspace');
+backspace_btn.addEventListener('click', () => backspace());
 
 const add_btn = document.querySelector('.add');
 add_btn.addEventListener('click', () => setOperator('+'));
@@ -72,8 +121,21 @@ function divide(num1, num2) {
   return round(num1 / num2);
 }
 
+function backspace() {
+  display_span.textContent = display_span.textContent.slice(
+    0,
+    display_span.textContent.length - 1
+  );
+
+  if (operator === '') {
+    operand1 = Number(display_span.textContent);
+  } else {
+    operand2 = Number(display_span.textContent);
+  }
+}
+
 function round(num) {
-  return Math.round((num + Number.EPSILON) * 1000) / 1000;
+  return Math.round((num + Number.EPSILON) * 1000000) / 1000000;
 }
 
 function equals() {
@@ -104,6 +166,10 @@ function operate(operator, num1, num2) {
 }
 
 function populateDisplay(num) {
+  if (num === '.' && display_span.textContent.includes('.')) {
+    return;
+  }
+
   if (operator === '') {
     display_span.textContent += num;
     operand1 = Number(display_span.textContent);
