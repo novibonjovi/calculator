@@ -22,7 +22,7 @@ window.addEventListener('keypress', (e) => {
       return populateDisplay(9);
     case 46:
       return populateDisplay('.');
-    case 61:
+    case 13:
       return equals();
     case 43:
       return setOperator('+');
