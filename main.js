@@ -36,8 +36,11 @@ window.addEventListener('keypress', (e) => {
 });
 
 window.addEventListener('keydown', (e) => {
-  if (e.keyCode === 8) {
-    backspace();
+  switch (e.keyCode) {
+    case 8:
+      return backspace();
+    case 27:
+      return clear();
   }
 });
 
@@ -127,6 +130,10 @@ function backspace() {
     display_span.textContent.length - 1
   );
 
+  if (display_span.textContent === '') {
+    display_span.textContent = '0';
+  }
+
   if (operator === '') {
     operand1 = Number(display_span.textContent);
   } else {
@@ -141,6 +148,10 @@ function round(num) {
 function equals() {
   if (operand1 !== undefined && operand2 !== undefined) {
     display_span.textContent = operate(operator, operand1, operand2);
+  }
+
+  if (display_span.textContent === 'NaN') {
+    display_span.textContent = 'ERROR';
   }
 
   operand1 = undefined;
@@ -165,12 +176,44 @@ function operate(operator, num1, num2) {
   }
 }
 
+/*
+function numberWithoutCommas(num) {
+  return num.replace("'", '');
+}
+
+function numberWithCommas(num) {
+  numTemp = numberWithoutCommas(num);
+
+  if (numTemp.length > 3 && numTemp.length < 7) {
+    return numTemp.slice(0, 3) + "'" + numTemp.slice(3);
+  } else if (numTemp.length > 6) {
+    return (
+      numTemp.slice(0, 3) + "'" + numTemp.slice(3, 6) + "'" + numTemp.slice(6)
+    );
+  } else {
+    return numTemp;
+  }
+}
+*/
+
 function populateDisplay(num) {
   if (num === '.' && display_span.textContent.includes('.')) {
     return;
   }
 
+  if (display_span.textContent === '0' && num === '.') {
+    display_span.textContent = '0.';
+    return;
+  }
+
+  if (display_span.textContent === 'ERROR') {
+    display_span.textContent = '';
+  }
+
   if (operator === '') {
+    if (display_span.textContent === '0') {
+      display_span.textContent = '';
+    }
     display_span.textContent += num;
     operand1 = Number(display_span.textContent);
   } else if (operator !== '' && operand2 === undefined) {
@@ -188,6 +231,10 @@ function setOperator(operation) {
     display_span.textContent = operate(operator, operand1, operand2);
     operand1 = Number(display_span.textContent);
     operand2 = undefined;
+
+    if (display_span.textContent === 'NaN') {
+      display_span.textContent = 'ERROR';
+    }
   } else {
     operand1 = Number(display_span.textContent);
   }
@@ -196,7 +243,7 @@ function setOperator(operation) {
 }
 
 function clear() {
-  display_span.textContent = '';
+  display_span.textContent = '0';
   setOperator('');
   operand1 = undefined;
   operand2 = undefined;
