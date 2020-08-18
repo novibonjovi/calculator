@@ -80,29 +80,60 @@ const decimalPoint_btn = document.querySelector('.decimalPoint');
 decimalPoint_btn.addEventListener('click', () => populateDisplay('.'));
 
 const equals_btn = document.querySelector('.equals');
-equals_btn.addEventListener('click', () => equals());
+equals_btn.addEventListener('click', () => {
+  equals();
+  toggleBtn();
+});
 
 const clear_btn = document.querySelector('.clear');
-clear_btn.addEventListener('click', () => clear());
+clear_btn.addEventListener('click', () => {
+  clear();
+  toggleBtn();
+});
 
 const backspace_btn = document.querySelector('.backspace');
 backspace_btn.addEventListener('click', () => backspace());
 
 const add_btn = document.querySelector('.add');
-add_btn.addEventListener('click', () => setOperator('+'));
+add_btn.addEventListener('click', () => {
+  setOperator('+');
+  toggleBtn(add_btn);
+});
 
 const substract_btn = document.querySelector('.substract');
-substract_btn.addEventListener('click', () => setOperator('-'));
+substract_btn.addEventListener('click', () => {
+  setOperator('-');
+  toggleBtn(substract_btn);
+});
 
 const multiply_btn = document.querySelector('.multiply');
-multiply_btn.addEventListener('click', () => setOperator('*'));
+multiply_btn.addEventListener('click', () => {
+  setOperator('*');
+  toggleBtn(multiply_btn);
+});
 
 const divide_btn = document.querySelector('.divide');
-divide_btn.addEventListener('click', () => setOperator('/'));
+divide_btn.addEventListener('click', () => {
+  setOperator('/');
+  toggleBtn(divide_btn);
+});
 
 let operator = '';
 let operand1 = undefined;
 let operand2 = undefined;
+
+function toggleBtn(btn) {
+  divide_btn.classList.remove('button-active');
+  multiply_btn.classList.remove('button-active');
+  add_btn.classList.remove('button-active');
+  substract_btn.classList.remove('button-active');
+
+  if (btn === undefined) {
+    return;
+  }
+
+  btn.classList.add('button-active');
+}
 
 function add(num1, num2) {
   return round(num1 + num2);
@@ -148,6 +179,10 @@ function round(num) {
 function equals() {
   if (operand1 !== undefined && operand2 !== undefined) {
     display_span.textContent = operate(operator, operand1, operand2);
+
+    if (display_span.textContent.length > 11) {
+      display_span.textContent = 'ERROR';
+    }
   }
 
   if (display_span.textContent === 'NaN') {
@@ -210,17 +245,38 @@ function populateDisplay(num) {
     display_span.textContent = '';
   }
 
+  if (operand1 === undefined && operand2 === undefined && operator === '') {
+    display_span.textContent = '';
+  }
+
   if (operator === '') {
+    if (display_span.textContent.length === 11) {
+      return;
+    }
+
     if (display_span.textContent === '0') {
       display_span.textContent = '';
     }
+
     display_span.textContent += num;
     operand1 = Number(display_span.textContent);
   } else if (operator !== '' && operand2 === undefined) {
+    if (display_span.textContent === '0') {
+      display_span.textContent = '';
+    }
+
     display_span.textContent = '';
     display_span.textContent += num;
     operand2 = Number(display_span.textContent);
   } else {
+    if (display_span.textContent === '0') {
+      display_span.textContent = '';
+    }
+
+    if (display_span.textContent.length === 11) {
+      return;
+    }
+
     display_span.textContent += num;
     operand2 = Number(display_span.textContent);
   }
@@ -229,6 +285,11 @@ function populateDisplay(num) {
 function setOperator(operation) {
   if (operand1 !== undefined && operand2 !== undefined && operator !== '') {
     display_span.textContent = operate(operator, operand1, operand2);
+
+    if (display_span.textContent.length > 11) {
+      display_span.textContent = 'ERROR';
+    }
+
     operand1 = Number(display_span.textContent);
     operand2 = undefined;
 
