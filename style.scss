@@ -55,6 +55,20 @@ button {
     margin: 5px;
     font-size: 150%;
   }
+
+  &.divide:active,
+  &.multiply:active,
+  &.substract:active,
+  &.add:active,
+  &.equals:active {
+    background: hsl(166, 14%, 85%);
+    color: hsl(175, 76%, 27%);
+  }
+}
+
+button.button-active {
+  background: hsl(166, 14%, 85%);
+  color: hsl(175, 76%, 27%);
 }
 
 .clear {

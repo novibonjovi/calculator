@@ -71,6 +71,16 @@ button:active {
   font-size: 150%;
 }
 
+button.divide:active, button.multiply:active, button.substract:active, button.add:active, button.equals:active {
+  background: #d3dedc;
+  color: #117970;
+}
+
+button.button-active {
+  background: #d3dedc;
+  color: #117970;
+}
+
 .clear {
   -ms-grid-column: 1;
   -ms-grid-column-span: 2;
