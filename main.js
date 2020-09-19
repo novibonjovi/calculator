@@ -235,17 +235,21 @@ function populateDisplay(num) {
   if (num === '.' && display_span.textContent.includes('.')) {
     return;
   }
-
+  /*
   if (display_span.textContent === '0' && num === '.') {
     display_span.textContent = '0.';
-    return;
   }
-
+*/
   if (display_span.textContent === 'ERROR') {
     display_span.textContent = '';
   }
 
-  if (operand1 === undefined && operand2 === undefined && operator === '') {
+  if (
+    operand1 === undefined &&
+    operand2 === undefined &&
+    operator === '' &&
+    num !== '.'
+  ) {
     display_span.textContent = '';
   }
 
@@ -254,14 +258,14 @@ function populateDisplay(num) {
       return;
     }
 
-    if (display_span.textContent === '0') {
+    if (display_span.textContent === '0' && num !== '.') {
       display_span.textContent = '';
     }
 
     display_span.textContent += num;
     operand1 = Number(display_span.textContent);
   } else if (operator !== '' && operand2 === undefined) {
-    if (display_span.textContent === '0') {
+    if (display_span.textContent === '0' && num !== '.') {
       display_span.textContent = '';
     }
 
@@ -269,7 +273,7 @@ function populateDisplay(num) {
     display_span.textContent += num;
     operand2 = Number(display_span.textContent);
   } else {
-    if (display_span.textContent === '0') {
+    if (display_span.textContent === '0' && num !== '.') {
       display_span.textContent = '';
     }
 
